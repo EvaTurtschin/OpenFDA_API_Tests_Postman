@@ -1,35 +1,42 @@
-name: Run OpenFDA API Tests
+name: Postman API Tests with Allure Report
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    branches:
-      - main
 
 jobs:
-  test:
+  run-tests:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: 18
 
-      - name: Install Newman
-        run: npm install -g newman
+      - name: Install Newman and Allure
+        run: |
+          npm install -g newman newman-reporter-allure allure-commandline
 
-      - name: Run API Tests
+      - name: Run Postman tests
         run: |
           newman run OpenFDA_Postman_Collection.json \
-          -e OpenFDA_Postman_Environment.json \
-          --reporters cli,junit \
-          --reporter-junit-export results.xml
+            -e OpenFDA_Postman_Environment.json \
+            -r cli,allure --reporter-allure-export allure-results
+
+      - name: Generate Allure HTML report
+        run: |
+          allure generate allure-results --clean -o allure-report
+
+      - name: Upload Allure Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report
 
       - name: Upload JUnit Test Results
         uses: actions/upload-artifact@v4
