@@ -1,17 +1,20 @@
 # OpenFDA_API_Tests_Postman
 
-Automated tests for the [OpenFDA API](https://open.fda.gov/apis/) using Postman and Newman.
+Automated tests for the [OpenFDA API](https://open.fda.gov/apis/) using Postman and Newman, with CI/CD integration via GitHub Actions and Allure reports.
 
 ---
-
 ## Project Structure
 
+```bash
 OpenFDA_API_Tests/
 ├─ collections/
-│ └─ OpenFDA_Postman_Collection.json
+│  └─ OpenFDA_Postman_Collection.json
 ├─ environments/
-│ └─ OpenFDA_Postman_Environment.json
+│  └─ OpenFDA_Postman_Environment.json
+├─ workflows/
+│  └─ run-tests.yml
 └─ README.md
+```
 
 ## Requirements
 
@@ -33,20 +36,17 @@ newman run collections/OpenFDA_Postman_Collection.json \
     -e environments/OpenFDA_Postman_Environment.json \
     -r cli,junit
 ```
+The -r cli,junit option generates output in CLI and JUnit formats (useful for CI reporting).
 
-```bash
--r cli,junit generates output in CLI and JUnit formats (optional for Jenkins reporting)
-```
-
-Make sure base_url and api_key are set in the environment file.
-
-### Run specific folders (optional)
+### Run specific folders (optional):
 
 ```bash
 newman run collections/OpenFDA_Postman_Collection.json \
     -e environments/OpenFDA_Postman_Environment.json \
     --folder "Functional"
 ```
+
+Ensure that base_url and api_key are set in the environment file before running.
 
 ## Test Coverage
 
@@ -81,9 +81,33 @@ Tests are written in Postman scripting with proper handling of JSON parsing erro
 
 - smallResponseTime / largeResponseTime – Used in performance comparisons
 
-## Jenkins Integration (Optional)
+## CI/CD with GitHub Actions
 
-- Add repository to Jenkins.
+The project uses GitHub Actions for automated testing on each push or pull request.
+
+### Workflow highlights:
+
+- Run Newman tests – Executes all Postman tests.
+
+- Generate Allure report – Collects test results and generates a visual report.
+
+- Deploy to GitHub Pages – Allure report is published automatically.
+
+### Viewing the Allure Report
+
+After workflow execution, the report is accessible at:
+
+[Open Allure Report](https://evaturtschin.github.io/OpenFDA_API_Tests_Postman/)
+
+## Notes on CI Behavior
+
+- The Response Time check is live; it may occasionally warn if responses are slow.
+
+- Negative tests allow 200 OK responses if the API does not strictly enforce validation.
+
+## Optional Jenkins Integration
+
+- Add the repository to Jenkins.
 
 - Install Node.js and Newman on the Jenkins node.
 
@@ -95,7 +119,7 @@ newman run collections/OpenFDA_Postman_Collection.json \
     -r cli,junit
 ```
 
-- Use JUnit report for test results visualization.
+- Use the JUnit report for test results visualization.
 
 ### License
 
