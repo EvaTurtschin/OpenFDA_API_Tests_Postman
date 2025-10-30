@@ -1,0 +1,3 @@
+if (!pm.environment.get("api_key")) {
+    console.warn("⚠️ API key not set in environment!");
+}

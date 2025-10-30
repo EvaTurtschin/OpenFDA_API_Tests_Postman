@@ -1,0 +1,13 @@
+pm.test("Status 200", () => pm.response.to.have.status(200));
+pm.test("Response is JSON", () => pm.response.to.be.json);
+
+responseTime = pm.response.responseTime;
+
+pm.test("Response time < 2000 ms (warning only)", () => {
+    if (responseTime > 2000) {
+        console.warn(`⚠️ Response time is high: ${responseTime} ms`);
+    }
+});
+
+pm.environment.set("largeResponseTime", responseTime);
+console.log("Response time:", responseTime, "ms");

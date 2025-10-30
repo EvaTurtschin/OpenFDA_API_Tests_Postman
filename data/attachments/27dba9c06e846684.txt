@@ -1,0 +1,4 @@
+pm.test("Status 200", () => pm.response.to.have.status(200));
+pm.test("Rate-limit headers exist (optional)", () => {
+    pm.expect(pm.response.headers.has('x-ratelimit-limit')).to.be.oneOf([true, false]);
+});

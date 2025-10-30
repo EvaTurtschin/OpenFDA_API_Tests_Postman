@@ -1,0 +1,27 @@
+pm.test("Status 200", () => pm.response.to.have.status(200));
+pm.test("Response is JSON", () => pm.response.to.be.json);
+
+data = pm.response.json();
+
+pm.test("Contains meta and results", () => {
+    pm.expect(data).to.have.property("meta");
+    pm.expect(data).to.have.property("results");
+});
+
+const first = data.results[0];
+pm.test("Result has expected high-level fields", () => {
+    pm.expect(first).to.have.property("safetyreportid");
+    pm.expect(first).to.have.property("patient");
+    pm.expect(first).to.have.property("serious");
+});
+
+pm.test("Patient section contains expected subfields", () => {
+    const patient = first.patient;
+    pm.expect(patient).to.have.property("reaction");
+    pm.expect(patient).to.have.property("drug");
+});
+
+pm.test("Each reaction entry has reactionmeddrapt", () => {
+    const reactions = first.patient.reaction;
+    pm.expect(reactions[0]).to.have.property("reactionmeddrapt");
+});

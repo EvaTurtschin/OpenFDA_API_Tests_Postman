@@ -1,0 +1,6 @@
+if (!pm.environment.get("requestCount")) {
+    pm.environment.set("requestCount", 1);
+} else {
+    let count = parseInt(pm.environment.get("requestCount")) + 1;
+    pm.environment.set("requestCount", count);
+}

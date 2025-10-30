@@ -1,0 +1,48 @@
+// Save the first page safely
+let firstPageData;
+try {
+    firstPageData = pm.response.json();
+} catch (e) {
+    pm.test("Response is valid JSON", () => pm.expect.fail("Invalid JSON in first page response"));
+    return;
+}
+
+if (!firstPageData.results || !Array.isArray(firstPageData.results)) {
+    pm.test("First page has results", () => pm.expect.fail("No 'results' field in first page response"));
+    return;
+}
+
+let firstPageIds = firstPageData.results.map(r => r.safetyreportid).filter(Boolean);
+pm.environment.set("first_page_ids", firstPageIds.join(","));
+
+// Prepare second request
+const baseUrl = pm.environment.get("base_url");
+const apiKey = pm.environment.get("api_key");
+const url2 = `${baseUrl}/drug/event.json?api_key=${apiKey}&search=patient.reaction.reactionmeddrapt:"headache"&limit=2&skip=2`;
+
+// Send second page request
+pm.sendRequest(url2, function (err, res) {
+    pm.test("Second request completed without network error", () => pm.expect(err).to.be.null);
+
+    if (!res) return;
+    pm.test("Second page status 200", () => pm.expect(res).to.have.property("code", 200));
+
+    let secondPageData;
+    try {
+        secondPageData = res.json();
+    } catch (e) {
+        pm.test("Second page is valid JSON", () => pm.expect.fail("Invalid JSON in second page response"));
+        return;
+    }
+
+    if (!secondPageData.results || !Array.isArray(secondPageData.results)) {
+        pm.test("Second page has results", () => pm.expect.fail("No 'results' field in second page response"));
+        return;
+    }
+
+    // Check data don't overlap
+    const secondPageIds = secondPageData.results.map(r => r.safetyreportid).filter(Boolean);
+    const intersection = firstPageIds.filter(id => secondPageIds.includes(id));
+
+    pm.test("Pages do not overlap", () => pm.expect(intersection.length).to.equal(0));
+});

@@ -1,0 +1,45 @@
+// Check status and response format
+pm.test("Status 200", () => pm.response.to.have.status(200));
+pm.test("Response is JSON", () => pm.response.to.be.json);
+
+// Parse response data
+const responseData = pm.response.json();
+const results = responseData.results;
+
+// Check that results is a non-empty array
+pm.test("Results is a non-empty array", () => {
+    pm.expect(results).to.be.an("array").that.is.not.empty;
+});
+
+// Iterate over each result and validate fields
+results.forEach((item, index) => {
+
+    pm.test(`Result[${index}] has safetyreportid as non-empty string`, () => {
+        pm.expect(item).to.have.property("safetyreportid");
+        pm.expect(item.safetyreportid).to.be.a("string").that.is.not.empty;
+    });
+
+    pm.test(`Result[${index}] has serious flag 0, 1, or 2`, () => {
+    const seriousNum = Number(item.serious);
+    pm.expect([0, 1, 2]).to.include(seriousNum);
+    });
+
+    if (item.patient && Array.isArray(item.patient.reaction)) {
+        item.patient.reaction.forEach((reaction, i) => {
+            pm.test(`Result[${index}] Reaction[${i}] term is string`, () => {
+                pm.expect(reaction.reactionmeddrapt).to.be.a("string");
+            });
+        });
+    }
+
+    if (item.patient && Array.isArray(item.patient.drug)) {
+        item.patient.drug.forEach((drug, j) => {
+            pm.test(`Result[${index}] Drug[${j}] has drugcharacterization and medicinalproduct`, () => {
+                pm.expect(drug).to.have.property("drugcharacterization");
+                pm.expect(drug).to.have.property("medicinalproduct");
+                pm.expect(drug.medicinalproduct).to.be.a("string");
+            });
+        });
+    }
+
+});

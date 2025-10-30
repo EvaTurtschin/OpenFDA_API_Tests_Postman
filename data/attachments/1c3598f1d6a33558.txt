@@ -1,0 +1,13 @@
+pm.test("Status 200", () => pm.response.to.have.status(200));
+pm.test("Response is JSON", () => pm.response.to.be.json);
+
+data = pm.response.json();
+
+// Checking that the result is an array with counts
+pm.test("Results array exists", () => pm.expect(data.results).to.be.an("array"));
+pm.test("Results have count and term", () => {
+    data.results.forEach(item => {
+        pm.expect(item).to.have.property("term");
+        pm.expect(item).to.have.property("count");
+    });
+});

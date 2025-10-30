@@ -1,0 +1,21 @@
+pm.test("Status code 400 expected, but 200 is tolerated", () => {
+    pm.expect([200, 400]).to.include(pm.response.code);
+});
+
+let jsonResponse;
+try {
+    jsonResponse = pm.response.json();
+} catch (e) {
+    pm.test("Response is valid JSON", () => pm.expect.fail("Invalid JSON in response"));
+    return;
+}
+
+pm.test("Response contains either 'error' or 'results'", () => {
+    pm.expect(jsonResponse).to.have.any.keys("error", "results");
+});
+
+if (jsonResponse.error) {
+    pm.test("Error object has message", () => pm.expect(jsonResponse.error).to.have.property("message"));
+} else {
+    console.log("⚠️ API didn't return error object for invalid search syntax");
+}

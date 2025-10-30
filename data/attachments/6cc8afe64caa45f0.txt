@@ -1,0 +1,21 @@
+pm.test("Status code is 400 or 422 (if API validates limit), else 200 allowed", () => {
+    pm.expect([200, 400, 422]).to.include(pm.response.code);
+});
+
+let jsonResponse;
+try {
+    jsonResponse = pm.response.json();
+} catch (e) {
+    pm.test("Response is valid JSON", () => pm.expect.fail("Invalid JSON in response"));
+    return;
+}
+
+pm.test("Response structure contains 'error' or 'results'", () => {
+    pm.expect(jsonResponse).to.have.any.keys("error", "results");
+});
+
+if (jsonResponse.error) {
+    pm.test("Error object has message", () => pm.expect(jsonResponse.error).to.have.property("message"));
+} else {
+    console.log("⚠️ API ignored invalid limit and returned normal response");
+}

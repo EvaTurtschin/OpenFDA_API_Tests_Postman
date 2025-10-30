@@ -1,0 +1,8 @@
+pm.test("Status 200", () => pm.response.to.have.status(200));
+pm.test("Response is JSON", () => pm.response.to.be.json);
+
+apiInfo = pm.response.json();
+pm.test("Response contains meta", () => pm.expect(apiInfo).to.have.property('meta'));
+pm.test("Rate limit info exists", () => {
+  pm.expect(apiInfo.meta).to.have.property('results');
+});

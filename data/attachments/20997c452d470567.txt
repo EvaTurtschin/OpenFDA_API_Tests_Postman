@@ -1,0 +1,7 @@
+pm.test("Response valid without key", () => {
+  pm.expect(pm.response.code).to.be.oneOf([200, 403]);
+});
+
+if (pm.response.code === 403) {
+  console.log("API key required for this operation or rate limit exceeded.");
+}

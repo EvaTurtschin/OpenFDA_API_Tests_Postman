@@ -1,0 +1,13 @@
+pm.test("Status 200", () => pm.response.to.have.status(200));
+
+count = parseInt(pm.environment.get("requestCount"));
+console.log("Request #", count, "Time:", pm.response.responseTime, "ms");
+
+pm.test("Response is JSON", () => pm.response.to.be.json);
+
+if (count < 5) {
+    postman.setNextRequest("Request 3 — Load sanity check");
+} else {
+    pm.environment.unset("requestCount");
+    console.log("Load sanity check finished");
+}

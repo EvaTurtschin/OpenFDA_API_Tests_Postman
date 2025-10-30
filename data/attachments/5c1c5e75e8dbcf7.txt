@@ -1,0 +1,13 @@
+pm.test("Status 200", () => pm.response.to.have.status(200));
+pm.test("Response is JSON", () => pm.response.to.be.json);
+
+data = pm.response.json();
+
+pm.test("Response has meta and results", () => {
+  pm.expect(data).to.have.property("meta");
+  pm.expect(data).to.have.property("results");
+});
+
+pm.test("Results array not empty", () => {
+  pm.expect(data.results.length).to.be.above(0);
+});
