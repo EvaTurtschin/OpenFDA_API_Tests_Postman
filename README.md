@@ -36,7 +36,7 @@ newman run collections/OpenFDA_Postman_Collection.json \
     -e environments/OpenFDA_Postman_Environment.json \
     -r cli,junit
 ```
-The -r cli,junit option generates output in CLI and JUnit formats (useful for CI reporting).
+The [-r cli,junit] option generates output in CLI and JUnit formats (useful for CI reporting).
 
 ### Run specific folders (optional):
 
