@@ -1,0 +1,23 @@
+{
+    "Date": "Thu, 30 Oct 2025 17:30:53 GMT",
+    "Content-Type": "application/json; charset=utf-8",
+    "Transfer-Encoding": "chunked",
+    "Connection": "keep-alive",
+    "Access-Control-Allow-Credentials": "true",
+    "Access-Control-Allow-Origin": "*",
+    "Age": "2",
+    "Cache-Control": "no-cache, no-store, must-revalidate",
+    "Content-Encoding": "gzip",
+    "Content-Security-Policy": "default-src 'none'",
+    "Etag": "W/\"71b-znJ0sq0zLsIE0ae+yXfkMIql16M\"",
+    "Link": "<https://api.fda.gov/drug/event.json?limit=1&skip=0&search_after=0%3D1000000032>; rel=\"next\"",
+    "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+    "Vary": "Accept-Encoding",
+    "Via": "https/1.1 api-umbrella (ApacheTrafficServer [cMsSf ])",
+    "X-Api-Umbrella-Request-Id": "cq6om1o4ocq67dbb87j0",
+    "X-Cache": "MISS",
+    "X-Content-Type-Options": "nosniff",
+    "X-Vcap-Request-Id": "de112d7f-0704-41ac-68f0-18d51fb6c566",
+    "X-Xss-Protection": "1; mode=block",
+    "X-Frame-Options": "deny"
+}

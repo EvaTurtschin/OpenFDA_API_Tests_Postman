@@ -1,0 +1,9 @@
+{
+    "User-Agent": "PostmanRuntime/7.39.1",
+    "Accept": "*/*",
+    "Cache-Control": "no-cache",
+    "Postman-Token": "b9f0a172-6d32-4d8c-9deb-64e083ccfb31",
+    "Host": "api.fda.gov",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Connection": "keep-alive"
+}

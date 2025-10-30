@@ -1,2 +1,0 @@
-level: warn, messages: ⚠️ Response time is high: 3705 ms
-level: log, messages: Response time:,3705,ms
